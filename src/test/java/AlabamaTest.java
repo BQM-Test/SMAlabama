@@ -230,16 +230,19 @@ public class AlabamaTest  extends BasePage {
             Thread.sleep(10000);
             irApuTodos();
             listEventosTodos().size();
-            listEventosTodos().get(1).click();//esta lista tiene los eventos que se ven en pantalla, no se visualizan los que se necesita hacer scroll
             List<WebElement> listBtnApostar =  alabamaApuestasPage.btnApostar();
-
-            for (WebElement findBtnEnable: listBtnApostar){
-                if(findBtnEnable.isEnabled()){
-                    findBtnEnable.click();
-                    break;
+            if(listEventosTodos().size()>0) {
+                listEventosTodos().get(1).click();//esta lista tiene los eventos que se ven en pantalla, no se visualizan los que se necesita hacer scroll
+                for (WebElement findBtnEnable: listBtnApostar){
+                    if(findBtnEnable.isEnabled()){
+                        findBtnEnable.click();
+                        break;
+                    }
                 }
-
+            }else{
+                System.out.println("NO hay eventos para apostar");
             }
+
 
         }
 
