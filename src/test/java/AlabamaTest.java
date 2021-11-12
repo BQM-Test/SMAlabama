@@ -229,8 +229,8 @@ public class AlabamaTest  extends BasePage {
             loginSMAlabama();
             Thread.sleep(10000);
             irApuTodos();
-            listEventosTodos();
-            listEventosTodos().get(1).click();
+            listEventosTodos().size();
+            listEventosTodos().get(1).click();//esta lista tiene los eventos que se ven en pantalla, no se visualizan los que se necesita hacer scroll
             List<WebElement> listBtnApostar =  alabamaApuestasPage.btnApostar();
 
             for (WebElement findBtnEnable: listBtnApostar){
