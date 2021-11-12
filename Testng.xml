@@ -1,0 +1,8 @@
+<suite name="Alabama Test">
+    <test name="Alabama Testng">
+        <classes>
+            <class name="AlabamaTest"></class>
+        </classes>
+    </test>
+</suite>
+
