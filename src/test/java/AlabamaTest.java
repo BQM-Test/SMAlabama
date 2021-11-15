@@ -279,9 +279,6 @@ public class AlabamaTest  extends BasePage {
 
         alabamaRegisterPage.fillingRegister("p", "p", "1");
 
-
-        //Datos usuario
-
     }
 
 

@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -128,18 +129,6 @@ public class AlabamaRegisterPage extends BasePage{
         calendar.add(Calendar.YEAR, year);  //
 
         return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
-
-    }
-
-    public void fillingRegister (String aNombre,String aApellido, String aCI){
-    //filling information
-        rNombre.sendKeys(aNombre);
-        rApellidos.sendKeys(aApellido);
-        rDocument.sendKeys(aCI);
-
-    }
-
-    public void fillingUserData(String name, String psw){
 
     }
 
