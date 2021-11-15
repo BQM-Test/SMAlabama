@@ -289,9 +289,6 @@ public class AlabamaTest  extends BasePage {
             System.out.println("msj de error es>>>>" + alabamaRegisterPage.msjErrorNombre());
         }
 
-
-        //Datos usuario
-
     }
 
 
