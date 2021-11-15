@@ -138,6 +138,28 @@ public class AlabamaRegisterPage extends BasePage{
     @FindBy (xpath = "(//span[contains(text(), ' El nombre debe de tener al menos 2 caracteres y máximo 100 caracteres')])")
     public WebElement nombreError;
 
+    @FindBy (xpath = "(//span[contains(text(), ' El apellido debe de tener al menos 2 caracteres y máximo 100 caracteres')])")
+    public WebElement apellidoError;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El nombre no debe tener números ni caracteres especiales')])")
+    public WebElement nombreNumError;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El apellido no debe tener números ni caracteres especiales')])")
+    public WebElement apellidoNumError;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El nombre es obligatorio ')])")
+    public WebElement nombreVacioError;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El apellido es obligatorio ')])")
+    public WebElement apellidoVacioError;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El número de documento es obligatorio ')])")
+    public WebElement docIncorrectoVacio;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El formato del número de documento es incorrecto ')])")
+    public WebElement docIncorrecto; //puede contener una letra y el msj de error es este
+
+
      public static Date sumarRestarDiasFecha(Date fecha, int dias){
 
         Calendar calendar = Calendar.getInstance();
