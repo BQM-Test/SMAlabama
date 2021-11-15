@@ -1,11 +1,14 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.openqa.selenium.interactions.Actions;
 import java.net.HttpURLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.net.URL;
@@ -245,8 +248,37 @@ public class AlabamaTest  extends BasePage {
 
         System.out.println("Title fill information>>>>" + alabamaRegisterPage.getH1TitleRegister());
 
+        Date myDate = new Date();
+        String myDateFormat = new SimpleDateFormat("dd-MM-yyyy").format(myDate);
+
+        Date myDateMenos18 = alabamaRegisterPage.sumarRestarYearFecha(myDate, -18);
+        System.out.println(myDateMenos18);
+
+        String dateDay = new SimpleDateFormat("dd").format(myDate);
+        String dateMounth = new SimpleDateFormat("MM").format(myDate);
+        String dateYear = new SimpleDateFormat("YYYY").format(myDateMenos18);
+        System.out.println(dateDay);
+        System.out.println(dateMounth);
+        System.out.println(dateYear);
+
+        Thread.sleep(3000);
+
+        //
+        Select selectDay = new Select(alabamaRegisterPage.rSelectDay());
+        selectDay.selectByValue(dateDay);
+       // Select selectDay = new Select(alabamaRegisterPage.rSelectDay);
+
+        Select selectMounth = new Select(alabamaRegisterPage.rSelectedMonth());
+        Select selectYear = new Select(alabamaRegisterPage.rSelectedYear());
+        selectMounth.selectByValue(dateMounth);
+        selectYear.selectByVisibleText(dateYear);
+
+        System.out.println(alabamaRegisterPage.sumarRestarDiasFecha(myDate, -1));
+        System.out.println(myDateFormat);
 
     }
+
+
 
 
     @Test
