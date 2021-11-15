@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -6,9 +7,13 @@ import org.openqa.selenium.support.PageFactory;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AlabamaRegisterPage extends BasePage{
+
+
 
 
     public AlabamaRegisterPage(WebDriver remoteDriver){
@@ -33,6 +38,25 @@ public class AlabamaRegisterPage extends BasePage{
     @FindBy(id="nombres")
     public WebElement rNombre;
 
+    public void rClickRegistrarme () throws InterruptedException {
+        //jse.executeScript("window.scrollTo(0, 500)");
+        JavascriptExecutor jse = (JavascriptExecutor)driver;
+        jse.executeScript("arguments[0].scrollIntoView(true);",clickRegistrarme);
+        Thread.sleep(3000);
+
+        clickRegistrarme.click();
+
+    }
+
+    public String msjErrorNombre () throws InterruptedException {
+        //filling information
+        JavascriptExecutor jse = (JavascriptExecutor)driver;
+        //jse.executeScript("window.scrollTo(0, 500)");
+        jse.executeScript("arguments[0].scrollIntoView(true);",rNombre);
+        Thread.sleep(3000);
+        String msjErrorNombre = nombreError.getText();
+        return msjErrorNombre;
+   }
 
     @FindBy (id="apellidos")
     public WebElement rApellidos;
@@ -111,6 +135,9 @@ public class AlabamaRegisterPage extends BasePage{
     @FindBy (id="acceptTermsAndConditions") //checkBox
     public WebElement rAcceptTermsAndConditions;
 
+    @FindBy (xpath = "(//span[contains(text(), ' El nombre debe de tener al menos 2 caracteres y máximo 100 caracteres')])")
+    public WebElement nombreError;
+
      public static Date sumarRestarDiasFecha(Date fecha, int dias){
 
         Calendar calendar = Calendar.getInstance();
@@ -131,11 +158,33 @@ public class AlabamaRegisterPage extends BasePage{
 
     }
 
-    public void fillingRegister (String aNombre,String aApellido, String aCI){
+    public void fillingRegister (String aNombre,String aApellido, String aCI, String aSerie, String aFolioNumber
+                                , String aCellphone, String aEmail, String aLocation, String aUsuario,
+                                 String aPassword, String aPasswordRetyped) throws InterruptedException {
+
+        JavascriptExecutor jse = (JavascriptExecutor)driver;
+
     //filling information
         rNombre.sendKeys(aNombre);
         rApellidos.sendKeys(aApellido);
         rDocument.sendKeys(aCI);
+        jse.executeScript("arguments[0].scrollIntoView(true);",rSerie);
+        Thread.sleep(3000);
+        rSerie.sendKeys(aSerie);
+        if( rFolioNumber.isEnabled()){
+            rFolioNumber.sendKeys(aFolioNumber);
+        }
+        rCellphone.sendKeys(aCellphone);
+        rBetBySMS.click();
+        rEmail.sendKeys(aEmail);
+        rReceiveEmails.click();
+        Select selectDay = new Select(rLocation);
+        selectDay.selectByVisibleText(aLocation);
+        rUsuario.sendKeys(aUsuario);
+        rPassword.sendKeys(aPassword);
+        rPasswordRetyped.sendKeys(aPasswordRetyped);
+        rAcceptTermsAndConditions.click();
+
 
     }
 

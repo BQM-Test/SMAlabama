@@ -277,7 +277,17 @@ public class AlabamaTest  extends BasePage {
         System.out.println(alabamaRegisterPage.sumarRestarDiasFecha(myDate, -1));
         System.out.println(myDateFormat);
 
-        alabamaRegisterPage.fillingRegister("p", "p", "1");
+        alabamaRegisterPage.fillingRegister("p", "p", "1", "A","T","123456789", "j@j", "Montevideo", "pepe", "12345", "123456");
+
+        alabamaRegisterPage.rClickRegistrarme();
+
+        String rNombre = alabamaRegisterPage.rNombre.getText();
+        System.out.println(rNombre);
+        if (rNombre.length()<2){
+
+            System.out.println("El nombre tiene menos de 1 letra");
+            System.out.println("msj de error es>>>>" + alabamaRegisterPage.msjErrorNombre());
+        }
 
 
         //Datos usuario
