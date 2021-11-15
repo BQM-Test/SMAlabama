@@ -291,7 +291,16 @@ public class AlabamaTest  extends BasePage {
 
     }
 
+    @Test
+    public void editarDatosDeUsuario(){
+        AlabamaCuentaPage alabamaCuentaPage= new AlabamaCuentaPage(driver);
+        AlabamaHomePage alabamaHomePage= new AlabamaHomePage(driver);
 
+        alabamaHomePage.clickBtnIngresar(); //Click en boton ingresar
+        alabamaHomePage.fillloginPorUpIngresar(); //Ingresar datos
+        alabamaHomePage.clickBtnpopUpIngresar(); //Click en ingresar del pop up
+
+    }
 
     @Test
     public void mostarLinksHomeTest(){
