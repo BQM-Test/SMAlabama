@@ -21,6 +21,10 @@ public String validarTituloSMAlabama() {
         driver.findElement(By.xpath("(//*[contains(text(), ' Ingresar ')])")).click();
     }
 
+    public void clickBtnRegistrarse(){
+
+        driver.findElement(By.xpath("(//*[contains(text(), ' Registrarse ')])")).click();
+    }
 
     public void fillloginPorUpIngresar(){
 

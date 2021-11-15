@@ -1,7 +1,9 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlabamaApuestasPage extends BasePage {
@@ -55,6 +57,25 @@ public class AlabamaApuestasPage extends BasePage {
     public List<WebElement> getLink(){
 
         return driver.findElements(By.tagName("a"));
+    }
+
+    @Test
+    public List<WebElement> listEventosTodos(){
+        AlabamaApuestasPage alabamaApuestasPage =   new AlabamaApuestasPage(driver);
+        //Busco encontrar todos los eventos de un deporte que selecciono para poder apostar y capto sus nombres
+        List<WebElement> getListEventos = alabamaApuestasPage.getListEquipos();
+        System.out.println(getListEventos.size());
+
+        ArrayList<WebElement> eventosGanaNombre = new ArrayList<WebElement>();
+
+        for (int i = 0; i <getListEventos.size() ; i++) {
+            WebElement equipo = getListEventos.get(i);
+            if(equipo.isDisplayed()){
+                eventosGanaNombre.add(equipo);
+
+            }
+        }
+        return eventosGanaNombre;
     }
 
 }

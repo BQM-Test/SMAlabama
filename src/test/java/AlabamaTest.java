@@ -1,5 +1,4 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -201,24 +200,6 @@ public class AlabamaTest  extends BasePage {
         }
     //lista de eventos en todos (solo los que se visualizan primero
 
-    @Test
-    public List<WebElement> listEventosTodos(){
-        AlabamaApuestasPage alabamaApuestasPage =   new AlabamaApuestasPage(driver);
-        //Busco encontrar todos los eventos de un deporte que selecciono para poder apostar y capto sus nombres
-        List<WebElement> getListEventos = alabamaApuestasPage.getListEquipos();
-        System.out.println(getListEventos.size());
-
-        ArrayList<WebElement> eventosGanaNombre = new ArrayList<WebElement>();
-
-        for (int i = 0; i <getListEventos.size() ; i++) {
-            WebElement equipo = getListEventos.get(i);
-            if(equipo.isDisplayed()){
-                eventosGanaNombre.add(equipo);
-
-            }
-        }
-        return eventosGanaNombre;
-    }
 
     @Test
 
@@ -229,10 +210,10 @@ public class AlabamaTest  extends BasePage {
             loginSMAlabama();
             Thread.sleep(10000);
             irApuTodos();
-            listEventosTodos().size();
+            List<WebElement> listEventosTodos=  alabamaApuestasPage.listEventosTodos();
             List<WebElement> listBtnApostar =  alabamaApuestasPage.btnApostar();
-            if(listEventosTodos().size()>0) {
-                listEventosTodos().get(1).click();//esta lista tiene los eventos que se ven en pantalla, no se visualizan los que se necesita hacer scroll
+            if(listEventosTodos.size()>0) {
+                listEventosTodos.get(1).click();//esta lista tiene los eventos que se ven en pantalla, no se visualizan los que se necesita hacer scroll
                 for (WebElement findBtnEnable: listBtnApostar){
                     if(findBtnEnable.isEnabled()){
                         findBtnEnable.click();
@@ -245,6 +226,27 @@ public class AlabamaTest  extends BasePage {
 
 
         }
+
+    @Test
+        public void fillRegister() throws InterruptedException {
+
+        AlabamaHomePage alabamaHomePage = new AlabamaHomePage(driver);
+        AlabamaApuestasPage alabamaApuestasPage =   new AlabamaApuestasPage(driver);
+        AlabamaRegisterPage alabamaRegisterPage =   new AlabamaRegisterPage(driver);
+
+        alabamaHomePage.clickBtnRegistrarse();
+
+        Thread.sleep(3000);
+
+        String urlRegister=alabamaRegisterPage.getCurrentUrl();
+        System.out.println("url de register >>>--" + urlRegister);//https://supermatch-alabama-test.bqmtest.com.uy/user/register
+        Assert.assertTrue(urlRegister.contains("user"));
+        Assert.assertTrue(urlRegister.contains("register"));
+
+        System.out.println("Title fill information>>>>" + alabamaRegisterPage.getH1TitleRegister());
+
+
+    }
 
 
     @Test
@@ -303,49 +305,11 @@ public class AlabamaTest  extends BasePage {
 
     }
 
-    @Test
-
-    public void ingresarPageApuestas() throws InterruptedException {
-
-        AlabamaHomePage alabamaHomePage = new AlabamaHomePage(driver);
-        //alabamaHomePage.clickBtnApuestas();
-        List<WebElement> listApu = alabamaHomePage.listBtnApuestas();
-        System.out.println(listApu.size());
-
-        for (WebElement apu : listApu) {
-            System.out.println(">---"+apu.getText());
-
-        }
-
-        WebElement  divListDeportes = alabamaHomePage.divListDeportes();
-
-        List<WebElement> listDeportes = divListDeportes.findElements(By.id("dropdownBasic"));
-
-        System.out.println(">---Cantidad de deportes Activos:>--- " + listDeportes.size());
-
-        for (WebElement depActivos : listDeportes) {
-            System.out.println(">---Deporte encontrado: "+depActivos.getText());
-
-        }
-        for (WebElement depActivos : listDeportes) {
-            if (depActivos.getText().equals("Todos")) {
-                Assert.assertEquals(depActivos.getText(), "Todos");
-                System.out.println(">---Encontre titulo Todos y hago click para ir a todas las apuestas");
-                depActivos.click();
-                break;
-            }else {
-                System.out.println(">--- NO Encontre titulo todos");
-            }
-        }
-        Thread.sleep(3000);
-
-
-    }
 
     @Test //(dependsOnMethods = {"ingresarPageApuestas"})
     public void mostarLinksApuestasAllTest() throws InterruptedException {
 
-        ingresarPageApuestas();
+        irApuTodos();
         AlabamaApuestasPage alabamaApuestasPage = new AlabamaApuestasPage(driver);
         List<WebElement> linkList = alabamaApuestasPage.getLink();
         System.out.println(linkList.size());
@@ -455,6 +419,44 @@ public class AlabamaTest  extends BasePage {
 
                 System.out.println(">--- NO Encontre deporte");
             }
+
+
+    }
+      @Test
+
+    public void ingresarPageApuestas() throws InterruptedException {
+
+        AlabamaHomePage alabamaHomePage = new AlabamaHomePage(driver);
+        //alabamaHomePage.clickBtnApuestas();
+        List<WebElement> listApu = alabamaHomePage.listBtnApuestas();
+        System.out.println(listApu.size());
+
+        for (WebElement apu : listApu) {
+            System.out.println(">---"+apu.getText());
+
+        }
+
+        WebElement  divListDeportes = alabamaHomePage.divListDeportes();
+
+        List<WebElement> listDeportes = divListDeportes.findElements(By.id("dropdownBasic"));
+
+        System.out.println(">---Cantidad de deportes Activos:>--- " + listDeportes.size());
+
+        for (WebElement depActivos : listDeportes) {
+            System.out.println(">---Deporte encontrado: "+depActivos.getText());
+
+        }
+        for (WebElement depActivos : listDeportes) {
+            if (depActivos.getText().equals("Todos")) {
+                Assert.assertEquals(depActivos.getText(), "Todos");
+                System.out.println(">---Encontre titulo Todos y hago click para ir a todas las apuestas");
+                depActivos.click();
+                break;
+            }else {
+                System.out.println(">--- NO Encontre titulo todos");
+            }
+        }
+        Thread.sleep(3000);
 
 
     }
