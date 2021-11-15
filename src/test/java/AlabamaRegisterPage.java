@@ -139,5 +139,8 @@ public class AlabamaRegisterPage extends BasePage{
 
     }
 
+    public void fillingUserData(String name, String psw){
+
+    }
 
 }
