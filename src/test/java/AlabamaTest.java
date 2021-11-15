@@ -14,6 +14,7 @@ import java.util.List;
 import java.net.URL;
 
 
+
 public class AlabamaTest  extends BasePage {
 
     @BeforeMethod
@@ -264,20 +265,21 @@ public class AlabamaTest  extends BasePage {
         Thread.sleep(3000);
 
         //
-        Select selectDay = new Select(alabamaRegisterPage.rSelectDay());
+        Select selectDay = new Select(alabamaRegisterPage.rSelectDay);
         selectDay.selectByValue(dateDay);
        // Select selectDay = new Select(alabamaRegisterPage.rSelectDay);
 
-        Select selectMounth = new Select(alabamaRegisterPage.rSelectedMonth());
-        Select selectYear = new Select(alabamaRegisterPage.rSelectedYear());
+        Select selectMounth = new Select(alabamaRegisterPage.rSelectedMonth);
+        Select selectYear = new Select(alabamaRegisterPage.rSelectedYear);
         selectMounth.selectByValue(dateMounth);
         selectYear.selectByVisibleText(dateYear);
 
         System.out.println(alabamaRegisterPage.sumarRestarDiasFecha(myDate, -1));
         System.out.println(myDateFormat);
 
-    }
+        alabamaRegisterPage.fillingRegister("p", "p", "1");
 
+    }
 
 
 
