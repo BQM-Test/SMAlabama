@@ -21,6 +21,7 @@ public class AlabamaCuentaPage extends BasePage{
     //Edicion de datos del usuario
 
     @FindBy(xpath = "//p[contains(text(), 'Tilinalab1')]")
+    public WebElement cUsuarioLogueado;
 
     //Botones
     @FindBy(xpath = "//button[contains(text(), 'Mi cuenta')]")
