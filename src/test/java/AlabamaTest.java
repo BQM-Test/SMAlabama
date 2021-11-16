@@ -292,14 +292,30 @@ public class AlabamaTest  extends BasePage {
     }
 
     @Test
-    public void editarDatosDeUsuario(){
-        AlabamaCuentaPage alabamaCuentaPage= new AlabamaCuentaPage(driver);
-        AlabamaHomePage alabamaHomePage= new AlabamaHomePage(driver);
+    public void editUserData(){
 
-        alabamaHomePage.clickBtnIngresar(); //Click en boton ingresar
-        alabamaHomePage.fillloginPorUpIngresar(); //Ingresar datos
-        alabamaHomePage.clickBtnpopUpIngresar(); //Click en ingresar del pop up
+        try {
+            AlabamaCuentaPage alabamaCuentaPage= new AlabamaCuentaPage(driver);
+            AlabamaHomePage alabamaHomePage= new AlabamaHomePage(driver);
 
+            alabamaHomePage.clickBtnIngresar(); //Click en boton ingresar
+            alabamaHomePage.fillloginPorUpIngresar(); //Ingresar datos
+            alabamaHomePage.clickBtnpopUpIngresar(); //Click en ingresar del pop up
+            Thread.sleep(11000);
+
+        } catch (InterruptedException e) {
+            System.out.println("Ocurrio un error al intentar loguearse, ver excepcion: "+e.getMessage());
+        }
+
+        //Registra si se logueo correctamente
+        System.out.println(AlabamaCuentaPage.usuarioLogueado("Tilinalab1"));
+
+        //Ingresar a Mi cuenta
+        if(AlabamaCuentaPage.ingresoMiCuenta()){
+            System.out.println("Se ingreso correctamente a 'Mi cuenta'");
+        }else{
+            System.out.println("Ocurrio un error");
+        }
     }
 
     @Test

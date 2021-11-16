@@ -1,4 +1,6 @@
 import com.google.errorprone.annotations.FormatMethod;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,34 +22,34 @@ public class AlabamaCuentaPage extends BasePage{
 
     //Edicion de datos del usuario
 
-    @FindBy(xpath = "//p[contains(text(), 'Tilinalab1')]")
-    public WebElement cUsuarioLogueado;
+    @FindBy(xpath = "(//p[contains(text(), 'Tilinalab1')])")
+    public static WebElement cUsuarioLogueado;
 
     //Botones
-    @FindBy(xpath = "//button[contains(text(), 'Mi cuenta')]")
-    public WebElement clickMiCuenta;
+    @FindBy(xpath = "(//button[contains(text(), 'Mi cuenta')])")
+    public static WebElement clickMiCuenta;
 
-    @FindBy(xpath = "//span[contains(text(), 'Editar')]")
+    @FindBy(xpath = "(//span[contains(text(), 'Editar')])")
     public WebElement clickEditar;
 
     @FindBy(id = "btn-confirm")
     public WebElement clickCambiar;
 
-    @FindBy(xpath = "//a[contains(text(), 'Cancelar')]")
+    @FindBy(xpath = "(//a[contains(text(), 'Cancelar')])")
     public WebElement clickCancelar;
 
     //Titulo del form
-    @FindBy(xpath = "//span[contains(text(), 'Datos personales')]")
-    public WebElement cTituloForm;
+    @FindBy(xpath = "(//span[contains(text(), 'Datos personales')])")
+    public static WebElement cTituloForm;
 
     //Datos no editables del usuario para la validacion del usuario logueado
-    @FindBy(xpath = "//span[contains(text(), '16-05-1986')]")
+    @FindBy(xpath = "(//span[contains(text(), '16-05-1986')])")
     public WebElement cNacimientoUsuLogueado;
 
-    @FindBy(xpath = "//span[contains(text(), '9683847')]")
+    @FindBy(xpath = "(//span[contains(text(), '9683847')])")
     public WebElement cDocumentoUsuLogueado;
 
-    @FindBy(xpath = "//span[contains(text(), ' TILINALAB1 ')]")
+    @FindBy(xpath = "(//span[contains(text(), ' TILINALAB1 ')])")
     public WebElement cUsuLogueado;
 
     //Inputs de datos editables
@@ -93,4 +95,32 @@ public class AlabamaCuentaPage extends BasePage{
 
     @FindBy(id = "username")
     public WebElement cUser;
+
+    public static String usuarioLogueado(String usuPrueba){
+        String mensaje="La cuenta no corresponde al usuario";
+        String usu= cUsuarioLogueado.getAttribute("innerHTML");
+
+        try{
+            if(usu.equals(usuPrueba)){
+                mensaje = "La cuenta corresponde al usuario logueado";
+            }
+        }catch(NoSuchElementException ex){
+           mensaje= ex.getMessage();
+        }
+
+        return mensaje;
+    }
+
+    public static boolean ingresoMiCuenta(){
+        cUsuarioLogueado.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(cTituloForm.getAttribute("innerHTML").equals("Datos personales")){
+            return true;
+        }
+        return false;
+    }
 }
