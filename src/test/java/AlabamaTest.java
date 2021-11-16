@@ -59,7 +59,6 @@ public class AlabamaTest  extends BasePage {
     }
 
     @Test
-
     public void irApuTodos() throws InterruptedException {
         AlabamaHomePage alabamaHomePage = new AlabamaHomePage(driver);
         AlabamaApuestasPage alabamaApuestasPage = new AlabamaApuestasPage(driver);
@@ -209,7 +208,6 @@ public class AlabamaTest  extends BasePage {
 
         public void apostarPrematch() throws InterruptedException {
 
-            AlabamaHomePage alabamaHomePage = new AlabamaHomePage(driver);
             AlabamaApuestasPage alabamaApuestasPage =   new AlabamaApuestasPage(driver);
             loginSMAlabama();
             Thread.sleep(10000);
@@ -277,21 +275,25 @@ public class AlabamaTest  extends BasePage {
         System.out.println(alabamaRegisterPage.sumarRestarDiasFecha(myDate, -1));
         System.out.println(myDateFormat);
 
-        alabamaRegisterPage.fillingRegister("p", "p", "1", "A","T","123456789", "j@j", "Montevideo", "pepe", "12345", "123456");
+        alabamaRegisterPage.fillingRegister("pop", "p", "1", "1",
+                "T","123456789", "j@j", "Montevideo",
+                "pepe", "12345", "123456");
 
         alabamaRegisterPage.rClickRegistrarme();
-
-        String rNombre = alabamaRegisterPage.rNombre.getText();
-        System.out.println(rNombre);
-        if (rNombre.length()<2){
+        alabamaRegisterPage.scrollObjeto(alabamaRegisterPage.rNombre);
+        Thread.sleep(2000);
+        alabamaRegisterPage.rNombre.click();
+        String name = alabamaRegisterPage.rNombre.getAttribute("value");
+        System.out.println(name);
+        if (name.length()<2){
 
             System.out.println("El nombre tiene menos de 1 letra");
             System.out.println("msj de error es>>>>" + alabamaRegisterPage.msjErrorNombre());
+        }else {
+            System.out.println("tiene mas de 2 letras");
         }
 
     }
-
-
 
     @Test
     public void mostarLinksHomeTest(){

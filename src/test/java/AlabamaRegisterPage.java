@@ -36,12 +36,11 @@ public class AlabamaRegisterPage extends BasePage{
     public WebElement clickRegistrarme;
 
     @FindBy(id="nombres")
-    public WebElement rNombre;
+    public WebElement   rNombre;
 
     public void rClickRegistrarme () throws InterruptedException {
         //jse.executeScript("window.scrollTo(0, 500)");
-        JavascriptExecutor jse = (JavascriptExecutor)driver;
-        jse.executeScript("arguments[0].scrollIntoView(true);",clickRegistrarme);
+        scrollObjeto(clickRegistrarme);
         Thread.sleep(3000);
 
         clickRegistrarme.click();
@@ -50,9 +49,7 @@ public class AlabamaRegisterPage extends BasePage{
 
     public String msjErrorNombre () throws InterruptedException {
         //filling information
-        JavascriptExecutor jse = (JavascriptExecutor)driver;
-        //jse.executeScript("window.scrollTo(0, 500)");
-        jse.executeScript("arguments[0].scrollIntoView(true);",rNombre);
+        scrollObjeto(rNombre);
         Thread.sleep(3000);
         String msjErrorNombre = nombreError.getText();
         return msjErrorNombre;
@@ -60,23 +57,6 @@ public class AlabamaRegisterPage extends BasePage{
 
     @FindBy (id="apellidos")
     public WebElement rApellidos;
-
-    //Fecha Nac
-
-    /*public WebElement rSelectDay(){
-        WebElement selectedDay = driver.findElement(By.id("selectedDay"));
-        return selectedDay;
-    }
-
-    public WebElement rSelectedMonth(){
-        WebElement selectedMonth = driver.findElement(By.id("selectedMonth"));
-        return selectedMonth;
-    }
-
-    public WebElement rSelectedYear(){
-        WebElement selectedYear = driver.findElement(By.id("selectedYear"));
-        return selectedYear;
-    }*/
 
     @FindBy (id="selectedDay")
     public WebElement rSelectDay;
@@ -90,11 +70,6 @@ public class AlabamaRegisterPage extends BasePage{
 
     @FindBy (id="document")
     public WebElement rDocument;
-
-    public WebElement rDocument(){
-        WebElement rDocument = driver.findElement(By.id("document"));
-        return rDocument;
-    }
 
     @FindBy (id="radio-ci-tradicional")
     public WebElement rRadioCITradicional;
@@ -135,6 +110,7 @@ public class AlabamaRegisterPage extends BasePage{
     @FindBy (id="acceptTermsAndConditions") //checkBox
     public WebElement rAcceptTermsAndConditions;
 
+    //msjs de error de los campos de llenado en Registro de usuario
     @FindBy (xpath = "(//span[contains(text(), ' El nombre debe de tener al menos 2 caracteres y máximo 100 caracteres')])")
     public WebElement nombreError;
 
@@ -153,12 +129,84 @@ public class AlabamaRegisterPage extends BasePage{
     @FindBy (xpath = "(//span[contains(text(), ' El apellido es obligatorio ')])")
     public WebElement apellidoVacioError;
 
+    @FindBy (xpath = "(//span[contains(text(), 'Debe seleccionar una fecha')])")
+    public WebElement fechaNacObligatoria;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El usuario debe ser mayor de edad')])")
+    public WebElement fechaNacMayor;
+
     @FindBy (xpath = "(//span[contains(text(), ' El número de documento es obligatorio ')])")
     public WebElement docIncorrectoVacio;
 
     @FindBy (xpath = "(//span[contains(text(), ' El formato del número de documento es incorrecto ')])")
     public WebElement docIncorrecto; //puede contener una letra y el msj de error es este
 
+    @FindBy (xpath = "(//span[contains(text(), ' El identificador es obligatorio ')])")
+    public WebElement identificadorObligatorio;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El identificador solo acepta letra y/o números y debe empezar con un número ')])")
+    public WebElement identificadorIncorrecto;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El identificador debe tener 9 caracteres ')])")
+    public WebElement identificadorCantCaraMenorNueve;
+
+    @FindBy (xpath = "(//span[contains(text(), ' La serie es obligatoria ')])")
+    public WebElement serieObligatoria;
+
+    @FindBy (xpath = "(//span[contains(text(), ' La serie debe ser una única letra ')])")
+    public WebElement serieLetra;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El número de folio es obligatorio ')])")
+    public WebElement numFolioObligatorio;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El número de folio sólo acepta números ')])")
+    public WebElement numFolioSoloNum;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El número de folio debe de tener 6 números ')])")
+    public WebElement numFolioMax6;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El número de celular es obligatorio ')])")
+    public WebElement cellObligatrio;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El número de celular es incorrecto ')])")
+    public WebElement cellIncorrecto; //no tiene la cant de digitos de un cel o contiene letra
+
+    @FindBy (xpath = "(//span[contains(text(), ' El email es obligatorio ')])")
+    public WebElement emailObligatorio;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El email no es correcto ')])")
+    public WebElement emailIncorrecto;
+
+    @FindBy (xpath = "(//span[contains(text(), 'El departamento es obligatorio')])")
+    public WebElement depObligatorio;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El nombre de usuario es obligatorio ')])")
+    public WebElement usrObligatorio;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El nombre de usuario debe de tener al menos 3 caracteres. ')])")
+    public WebElement usrCantMenorTresCara;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El nombre de usuario debe de tener menos de 23 caracteres ')])")
+    public WebElement usrCantMenorVeintiTresCara;
+
+    @FindBy (xpath = "(//span[contains(text(), ' El nombre de usuario no debe contener espacios ni caracteres especiales')])")
+    public WebElement usrCaraEspeciales;
+
+    @FindBy (xpath = "(//span[contains(text(), ' La contraseña es obligatoria ')])")
+    public WebElement passObligatoria;
+
+    @FindBy (xpath = "(//span[contains(text(), ' La contraseña debe tener entre 6 y 15 caracteres, al menos una letra y un número ')])")
+    public WebElement passSeisQuinceCaraLetraNum;
+
+    @FindBy (xpath = "(//span[contains(text(), ' Las contraseñas deben ser iguales ')])")
+    public WebElement retypePassIguales;
+
+    @FindBy (xpath = "(//span[contains(text(), 'Debe de aceptar los términos de uso y la política de privacidad')])")
+    public WebElement acceptTermsAndConditionsObligatorio;
+
+
+
+    //
 
      public static Date sumarRestarDiasFecha(Date fecha, int dias){
 
@@ -180,17 +228,22 @@ public class AlabamaRegisterPage extends BasePage{
 
     }
 
+    public void scrollObjeto (WebElement aObject){
+
+        JavascriptExecutor jse = (JavascriptExecutor)driver;
+        jse.executeScript("arguments[0].scrollIntoView(true);",aObject);
+
+    }
+
     public void fillingRegister (String aNombre,String aApellido, String aCI, String aSerie, String aFolioNumber
                                 , String aCellphone, String aEmail, String aLocation, String aUsuario,
                                  String aPassword, String aPasswordRetyped) throws InterruptedException {
 
-        JavascriptExecutor jse = (JavascriptExecutor)driver;
-
-    //filling information
+         //filling information
         rNombre.sendKeys(aNombre);
         rApellidos.sendKeys(aApellido);
         rDocument.sendKeys(aCI);
-        jse.executeScript("arguments[0].scrollIntoView(true);",rSerie);
+        scrollObjeto(rSerie);
         Thread.sleep(3000);
         rSerie.sendKeys(aSerie);
         if( rFolioNumber.isEnabled()){
@@ -210,8 +263,4 @@ public class AlabamaRegisterPage extends BasePage{
 
     }
 
-    public void fillingUserData(String name, String psw){
-
-    }
-
-}
+ }
