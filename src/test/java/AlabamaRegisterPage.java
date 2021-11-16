@@ -44,7 +44,6 @@ public class AlabamaRegisterPage extends BasePage{
         Thread.sleep(3000);
 
         clickRegistrarme.click();
-
     }
 
     public String msjErrorNombre () throws InterruptedException {

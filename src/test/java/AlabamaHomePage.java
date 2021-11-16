@@ -54,7 +54,6 @@ public String validarTituloSMAlabama() {
         driver.findElement(By.id("login-username")).sendKeys(userName);
         driver.findElement(By.id("login-password")).sendKeys(pass);
 
-
     }
 
 
