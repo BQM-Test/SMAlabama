@@ -42,7 +42,7 @@ public class AlabamaCuentaPage extends BasePage{
     public WebElement clickCancelar;
 
     //Titulo del form
-    @FindBy(xpath = "(//span[contains(text(), 'Datos personaless')])")
+    @FindBy(xpath = "(//span[contains(text(), 'Datos personales')])")
     public static WebElement cTituloForm;
 
     //Datos no editables del usuario para la validacion del usuario logueado
@@ -99,6 +99,10 @@ public class AlabamaCuentaPage extends BasePage{
     @FindBy(id = "username")
     public WebElement cUser;
 
+    /*
+    * Verifica que el nombre del usuario en la web
+    * corresponda al user que se logueo (En este caso: Tilinalab1)
+    * */
     public static String usuarioLogueado(String usuPrueba){
         String mensaje="La cuenta no corresponde al usuario";
         String usu= cUsuarioLogueado.getAttribute("innerHTML");
@@ -114,6 +118,10 @@ public class AlabamaCuentaPage extends BasePage{
         return mensaje;
     }
 
+    /*
+    * Al ingresar a "Mi cuenta" valida que los datos no editables del usuario
+    * correspondan al usuario logueado (En este caso: Tilinalab1)
+    * */
     public static boolean ingresoMiCuenta(WebDriver driver){
         boolean ret=false;
         cUsuarioLogueado.click();
@@ -141,6 +149,9 @@ public class AlabamaCuentaPage extends BasePage{
         return ret;
     }
 
+    /*
+    * Arma una lista con los elementos que encontro
+    * */
     public static List<WebElement> armarListaWebElements(WebDriver driver){
 
         //Carga los elementos que encuentra a la lista
@@ -148,7 +159,7 @@ public class AlabamaCuentaPage extends BasePage{
         List<WebElement> elementos = new ArrayList<>();
 
         //Valida primero si encuentra el elemento con isElementPresent()
-        if(isElementPresent(driver, By.xpath("(//span[contains(text(), 'Datos personaless')])"))){
+        if(isElementPresent(driver, By.xpath("(//span[contains(text(), 'Datos personales')])"))){
             cTituloForm.getAttribute("innerHTML");
             elementos.add(cTituloForm); //si es asi lo agrega
         }else{System.out.println("El titulo no es el esperado");}
@@ -172,9 +183,9 @@ public class AlabamaCuentaPage extends BasePage{
     }
 
     /*
-    Devuelve true si existe el elemento,
-    false si no existe
-     */
+    *Devuelve true si existe el elemento,
+    *false si no existe
+    * */
     public static boolean isElementPresent(WebDriver driver, By by) {
         try {
             driver.findElement(by);

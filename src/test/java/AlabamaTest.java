@@ -301,10 +301,10 @@ public class AlabamaTest  extends BasePage {
         alabamaHomePage.clickBtnpopUpIngresar(); //Click en ingresar del pop up
 
         //Validar que el usuario logueado sea el correcto
-        System.out.println(AlabamaCuentaPage.usuarioLogueado("Tilinalab1"));
+        Assert.assertEquals(AlabamaCuentaPage.usuarioLogueado("Tilinalab1"), "La cuenta corresponde al usuario logueado");
 
         //Ingresar a mi cuenta y validar datos del usuario
-        System.out.println(AlabamaCuentaPage.ingresoMiCuenta(driver));
+        Assert.assertEquals(AlabamaCuentaPage.ingresoMiCuenta(driver), true);
     }
 
     @Test
