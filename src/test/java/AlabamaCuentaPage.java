@@ -1,16 +1,23 @@
 import com.google.errorprone.annotations.FormatMethod;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import java.awt.*;
 
+
+
+import javax.xml.xpath.XPath;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlabamaCuentaPage extends BasePage{
+
+    /*
+    *Instancia de clases
+    * */
+    private static AlabamaRegisterPage alabamaRegisterPage;
+    private static MiLibreria miLibreria;
 
     //para utilizar los @Find By...
     public AlabamaCuentaPage(WebDriver remoteDriver){
@@ -99,6 +106,23 @@ public class AlabamaCuentaPage extends BasePage{
     @FindBy(id = "username")
     public WebElement cUser;
 
+    //Inputs del menu lateral Mi cuenta
+     @FindBy(xpath ="(//h2[contains(text(), 'Mi Cuenta')])")
+     public static WebElement tituloMiCuenta;
+
+   public static void menuMiCuenta(WebDriver driver) throws AWTException, InterruptedException {
+       //Baja el zoom del sitio
+       miLibreria.disminuirZoom(3);
+
+       //Elementos del menu en "Mi cuenta"
+       List<WebElement> itemsUl= driver.findElements(By.tagName("ul"));
+
+       for (WebElement i: itemsUl) {
+           System.out.println(i.getText());
+       }
+
+    }
+
     /*
     * Verifica que el nombre del usuario en la web
     * corresponda al user que se logueo (En este caso: Tilinalab1)
@@ -159,22 +183,22 @@ public class AlabamaCuentaPage extends BasePage{
         List<WebElement> elementos = new ArrayList<>();
 
         //Valida primero si encuentra el elemento con isElementPresent()
-        if(isElementPresent(driver, By.xpath("(//span[contains(text(), 'Datos personales')])"))){
+        if(miLibreria.isElementPresent(driver, By.xpath("(//span[contains(text(), 'Datos personales')])"))){
             cTituloForm.getAttribute("innerHTML");
             elementos.add(cTituloForm); //si es asi lo agrega
         }else{System.out.println("El titulo no es el esperado");}
 
-        if(isElementPresent(driver, By.xpath("(//span[contains(text(), '16-05-1986')])"))){
+        if(miLibreria.isElementPresent(driver, By.xpath("(//span[contains(text(), '16-05-1986')])"))){
             cNacimientoUsuLogueado.getAttribute("innerHTML");
             elementos.add(cNacimientoUsuLogueado);
         }else{System.out.println("La fecha de nacimiento no es la esperada");}
 
-        if(isElementPresent(driver, By.xpath("(//span[contains(text(), '9683847')])"))){
+        if(miLibreria.isElementPresent(driver, By.xpath("(//span[contains(text(), '9683847')])"))){
             cDocumentoUsuLogueado.getAttribute("innerHTML");
             elementos.add(cDocumentoUsuLogueado);
         }else{System.out.println("El documento no es el esperado");}
 
-        if(isElementPresent(driver, By.xpath("(//span[contains(text(), ' TILINALAB1 ')])"))){
+        if(miLibreria.isElementPresent(driver, By.xpath("(//span[contains(text(), ' TILINALAB1 ')])"))){
             cUsuLogueado.getAttribute("innerHTML");
             elementos.add(cUsuLogueado);
         }else{System.out.println("El usuario no es el esperado");}
@@ -182,16 +206,4 @@ public class AlabamaCuentaPage extends BasePage{
        return elementos;
     }
 
-    /*
-    *Devuelve true si existe el elemento,
-    *false si no existe
-    * */
-    public static boolean isElementPresent(WebDriver driver, By by) {
-        try {
-            driver.findElement(by);
-            return true;
-        } catch (NoSuchElementException ignored) {
-            return false;
-        }
-    }
 }

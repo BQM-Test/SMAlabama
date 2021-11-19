@@ -5,6 +5,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.openqa.selenium.interactions.Actions;
+
+import java.awt.*;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -292,7 +294,7 @@ public class AlabamaTest  extends BasePage {
     }
 
     @Test
-    public void editUserData() throws InterruptedException {
+    public void editUserData() throws InterruptedException, AWTException {
         AlabamaCuentaPage alabamaCuentaPage= new AlabamaCuentaPage(driver);
         AlabamaHomePage alabamaHomePage= new AlabamaHomePage(driver);
 
@@ -305,6 +307,9 @@ public class AlabamaTest  extends BasePage {
 
         //Ingresar a mi cuenta y validar datos del usuario
         Assert.assertEquals(AlabamaCuentaPage.ingresoMiCuenta(driver), true);
+
+        alabamaCuentaPage.menuMiCuenta(driver);
+
     }
 
     // se listan el contenido del menu de mi cuenta
