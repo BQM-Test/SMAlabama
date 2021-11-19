@@ -197,15 +197,15 @@ public class AlabamaRegisterPage extends BasePage{
     @FindBy (xpath = "(//span[contains(text(), ' La contraseña debe tener entre 6 y 15 caracteres, al menos una letra y un número ')])")
     public WebElement passSeisQuinceCaraLetraNum;
 
-    @FindBy (xpath = "(//span[contains(text(), ' Las contraseñas deben ser iguales ')])")
+    @FindBy (xpath = "(//*[contains(text(), ' Mis datos ')])")
     public WebElement retypePassIguales;
 
     @FindBy (xpath = "(//span[contains(text(), 'Debe de aceptar los términos de uso y la política de privacidad')])")
     public WebElement acceptTermsAndConditionsObligatorio;
 
-
-
     //
+
+
 
      public static Date sumarRestarDiasFecha(Date fecha, int dias){
 
