@@ -292,7 +292,7 @@ public class AlabamaTest  extends BasePage {
     }
 
     @Test
-    public void editarDatosDeUsuario(){
+    public void editUserData() throws InterruptedException {
         AlabamaCuentaPage alabamaCuentaPage= new AlabamaCuentaPage(driver);
         AlabamaHomePage alabamaHomePage= new AlabamaHomePage(driver);
 
@@ -300,6 +300,11 @@ public class AlabamaTest  extends BasePage {
         alabamaHomePage.fillloginPorUpIngresar(); //Ingresar datos
         alabamaHomePage.clickBtnpopUpIngresar(); //Click en ingresar del pop up
 
+        //Validar que el usuario logueado sea el correcto
+        Assert.assertEquals(AlabamaCuentaPage.usuarioLogueado("Tilinalab1"), "La cuenta corresponde al usuario logueado");
+
+        //Ingresar a mi cuenta y validar datos del usuario
+        Assert.assertEquals(AlabamaCuentaPage.ingresoMiCuenta(driver), true);
     }
 
     // se listan el contenido del menu de mi cuenta

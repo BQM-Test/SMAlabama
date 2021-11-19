@@ -7,6 +7,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AlabamaCuentaPage extends BasePage{
 
     //para utilizar los @Find By...
@@ -44,13 +47,13 @@ public class AlabamaCuentaPage extends BasePage{
 
     //Datos no editables del usuario para la validacion del usuario logueado
     @FindBy(xpath = "(//span[contains(text(), '16-05-1986')])")
-    public WebElement cNacimientoUsuLogueado;
+    public static WebElement cNacimientoUsuLogueado;
 
     @FindBy(xpath = "(//span[contains(text(), '9683847')])")
-    public WebElement cDocumentoUsuLogueado;
+    public static WebElement cDocumentoUsuLogueado;
 
     @FindBy(xpath = "(//span[contains(text(), ' TILINALAB1 ')])")
-    public WebElement cUsuLogueado;
+    public static WebElement cUsuLogueado;
 
     //Inputs de datos editables
     @FindBy(id ="name")
@@ -96,6 +99,10 @@ public class AlabamaCuentaPage extends BasePage{
     @FindBy(id = "username")
     public WebElement cUser;
 
+    /*
+    * Verifica que el nombre del usuario en la web
+    * corresponda al user que se logueo (En este caso: Tilinalab1)
+    * */
     public static String usuarioLogueado(String usuPrueba){
         String mensaje="La cuenta no corresponde al usuario";
         String usu= cUsuarioLogueado.getAttribute("innerHTML");
@@ -111,16 +118,80 @@ public class AlabamaCuentaPage extends BasePage{
         return mensaje;
     }
 
-    public static boolean ingresoMiCuenta(){
+    /*
+    * Al ingresar a "Mi cuenta" valida que los datos no editables del usuario
+    * correspondan al usuario logueado (En este caso: Tilinalab1)
+    * */
+    public static boolean ingresoMiCuenta(WebDriver driver){
+        boolean ret=false;
         cUsuarioLogueado.click();
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(cTituloForm.getAttribute("innerHTML").equals("Datos personales")){
-            return true;
+        List<WebElement> elementos= armarListaWebElements(driver);
+        if(elementos.size() == 4){
+
+            System.out.println("Los datos no editables del usuario logueado son correctos");
+            ret= true;
+
+            for (WebElement e: elementos) {
+                System.out.println(e.getAttribute("innerHTML"));
+            }
         }
-        return false;
+        else{
+            int cantNoEncontrados= 4- elementos.size();
+            //Else si el size < 4, hay elementos que no se encontraron
+            System.out.println("Hay elementos "+cantNoEncontrados +" que no se encontraron");
+        }
+
+        return ret;
+    }
+
+    /*
+    * Arma una lista con los elementos que encontro
+    * */
+    public static List<WebElement> armarListaWebElements(WebDriver driver){
+
+        //Carga los elementos que encuentra a la lista
+        boolean add;
+        List<WebElement> elementos = new ArrayList<>();
+
+        //Valida primero si encuentra el elemento con isElementPresent()
+        if(isElementPresent(driver, By.xpath("(//span[contains(text(), 'Datos personales')])"))){
+            cTituloForm.getAttribute("innerHTML");
+            elementos.add(cTituloForm); //si es asi lo agrega
+        }else{System.out.println("El titulo no es el esperado");}
+
+        if(isElementPresent(driver, By.xpath("(//span[contains(text(), '16-05-1986')])"))){
+            cNacimientoUsuLogueado.getAttribute("innerHTML");
+            elementos.add(cNacimientoUsuLogueado);
+        }else{System.out.println("La fecha de nacimiento no es la esperada");}
+
+        if(isElementPresent(driver, By.xpath("(//span[contains(text(), '9683847')])"))){
+            cDocumentoUsuLogueado.getAttribute("innerHTML");
+            elementos.add(cDocumentoUsuLogueado);
+        }else{System.out.println("El documento no es el esperado");}
+
+        if(isElementPresent(driver, By.xpath("(//span[contains(text(), ' TILINALAB1 ')])"))){
+            cUsuLogueado.getAttribute("innerHTML");
+            elementos.add(cUsuLogueado);
+        }else{System.out.println("El usuario no es el esperado");}
+
+       return elementos;
+    }
+
+    /*
+    *Devuelve true si existe el elemento,
+    *false si no existe
+    * */
+    public static boolean isElementPresent(WebDriver driver, By by) {
+        try {
+            driver.findElement(by);
+            return true;
+        } catch (NoSuchElementException ignored) {
+            return false;
+        }
     }
 }
