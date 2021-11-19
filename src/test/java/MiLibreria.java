@@ -1,12 +1,16 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.AWTException;
 
-public class MiLibreria {
+public class MiLibreria extends BasePage {
+
+    public MiLibreria(WebDriver remoteDriver) {
+        driver = remoteDriver;
+        wait = new WebDriverWait(driver, 5);
+    }
 
     /*
     * Metodo para disminuir el zoom del navegador (Chrome / Firefox)
@@ -53,5 +57,13 @@ public class MiLibreria {
             return false;
         }
     }
+
+    public void scrollObjeto (WebElement aObject){
+
+        JavascriptExecutor jse = (JavascriptExecutor)driver;
+        jse.executeScript("arguments[0].scrollIntoView(true);",aObject);
+
+    }
+
 
 }

@@ -316,6 +316,7 @@ public class AlabamaTest  extends BasePage {
     @Test
         public void menuMiCuenta() throws InterruptedException {
         AlabamaRegisterPage alabamaRegisterPage = new AlabamaRegisterPage(driver);
+        MiLibreria miLibreria = new MiLibreria(driver);
         loginSMAlabama();
         Thread.sleep(15000);
 
@@ -327,11 +328,11 @@ public class AlabamaTest  extends BasePage {
         List<WebElement> parrafos= element.findElements(By.tagName("ion-label"));
         List<WebElement> parrafosA= element.findElements(By.tagName("a"));
     for (WebElement e : parrafos) {
-        alabamaRegisterPage.scrollObjeto(e);
+        miLibreria.scrollObjeto(e);
         System.out.println(e.getText());
     }
     for (WebElement a : parrafosA){
-        alabamaRegisterPage.scrollObjeto(a);
+        miLibreria.scrollObjeto(a);
         System.out.println(a.getText());
     }
     }

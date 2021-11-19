@@ -40,7 +40,7 @@ public class AlabamaRegisterPage extends BasePage{
 
     public void rClickRegistrarme () throws InterruptedException {
         //jse.executeScript("window.scrollTo(0, 500)");
-        scrollObjeto(clickRegistrarme);
+        miLibreria.scrollObjeto(clickRegistrarme);
         Thread.sleep(3000);
 
         clickRegistrarme.click();
@@ -48,7 +48,7 @@ public class AlabamaRegisterPage extends BasePage{
 
     public String msjErrorNombre () throws InterruptedException {
         //filling information
-        scrollObjeto(rNombre);
+        miLibreria.scrollObjeto(rNombre);
         Thread.sleep(3000);
         String msjErrorNombre = nombreError.getText();
         return msjErrorNombre;
@@ -205,6 +205,7 @@ public class AlabamaRegisterPage extends BasePage{
 
     //
 
+    MiLibreria miLibreria = new MiLibreria(driver);
 
 
      public static Date sumarRestarDiasFecha(Date fecha, int dias){
@@ -227,12 +228,6 @@ public class AlabamaRegisterPage extends BasePage{
 
     }
 
-    public void scrollObjeto (WebElement aObject){
-
-        JavascriptExecutor jse = (JavascriptExecutor)driver;
-        jse.executeScript("arguments[0].scrollIntoView(true);",aObject);
-
-    }
 
     public void fillingRegister (String aNombre,String aApellido, String aCI, String aSerie, String aFolioNumber
                                 , String aCellphone, String aEmail, String aLocation, String aUsuario,
@@ -242,7 +237,7 @@ public class AlabamaRegisterPage extends BasePage{
         rNombre.sendKeys(aNombre);
         rApellidos.sendKeys(aApellido);
         rDocument.sendKeys(aCI);
-        scrollObjeto(rSerie);
+        miLibreria.scrollObjeto(rSerie);
         Thread.sleep(3000);
         rSerie.sendKeys(aSerie);
         if( rFolioNumber.isEnabled()){
