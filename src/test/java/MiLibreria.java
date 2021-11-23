@@ -1,6 +1,7 @@
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.openqa.selenium.WebElement;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.AWTException;
@@ -65,5 +66,32 @@ public class MiLibreria extends BasePage {
 
     }
 
+
+    public void btnEmpty (){
+
+    int invalidEmptyButton = 0;
+    int emptyNameAttribute = 0;
+    int emptyIdAttribute = 0;
+
+    List<WebElement> buttonTagsList = driver.findElements(By.tagName("button"));
+
+
+for(WebElement element : buttonTagsList){
+        if (element.getText().isEmpty() == true){
+            invalidEmptyButton++;
+        }
+        System.out.println(element.getAttribute("id"));
+        if (element.getAttribute("id").isEmpty()){
+            emptyIdAttribute++;
+        }
+        if (element.getAttribute("name").isEmpty()){
+            emptyNameAttribute++;
+        }
+    }
+System.out.println("Cantidad de botones vacios " + invalidEmptyButton);
+System.out.println("Cantidad de botones sin id " + emptyIdAttribute);
+System.out.println("Cantidad de botones sin attr name " + emptyNameAttribute);
+
+    }
 
 }
