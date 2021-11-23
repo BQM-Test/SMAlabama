@@ -1,11 +1,13 @@
-import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.AWTException;
+import java.util.ArrayList;
+import org.openqa.selenium.*;
+import java.util.List;
 
 public class MiLibreria extends BasePage {
+
 
     public MiLibreria(WebDriver remoteDriver) {
         driver = remoteDriver;
@@ -65,5 +67,12 @@ public class MiLibreria extends BasePage {
 
     }
 
+    public static ArrayList<String> castearListWebElement(List<WebElement> lista){
+        ArrayList<String> retorno= new ArrayList();
+        for (WebElement i: lista) {
+            retorno.add(i.getText());
+        }
 
+        return retorno;
+    }
 }

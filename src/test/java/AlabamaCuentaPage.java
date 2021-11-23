@@ -9,6 +9,7 @@ import java.awt.*;
 
 import javax.xml.xpath.XPath;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AlabamaCuentaPage extends BasePage{
@@ -110,17 +111,11 @@ public class AlabamaCuentaPage extends BasePage{
      @FindBy(xpath ="(//h2[contains(text(), 'Mi Cuenta')])")
      public static WebElement tituloMiCuenta;
 
-   public static void menuMiCuenta(WebDriver driver) throws AWTException, InterruptedException {
-       //Baja el zoom del sitio
-       miLibreria.disminuirZoom(3);
+   public static boolean menuMiCuenta(WebDriver driver, List<String> listaEsperada) throws AWTException, InterruptedException {
+       boolean listaCorrecta= false;
+       int aux=0;
 
-       //Elementos del menu en "Mi cuenta"
-       List<WebElement> itemsUl= driver.findElements(By.tagName("ul"));
-
-       for (WebElement i: itemsUl) {
-           System.out.println(i.getText());
-       }
-
+       return listaCorrecta;
     }
 
     /*

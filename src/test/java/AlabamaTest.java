@@ -9,12 +9,9 @@ import org.openqa.selenium.interactions.Actions;
 import java.awt.*;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.net.URL;
-
+import java.util.List;
 
 
 public class AlabamaTest  extends BasePage {
@@ -308,7 +305,21 @@ public class AlabamaTest  extends BasePage {
         //Ingresar a mi cuenta y validar datos del usuario
         Assert.assertEquals(AlabamaCuentaPage.ingresoMiCuenta(driver), true);
 
-        alabamaCuentaPage.menuMiCuenta(driver);
+
+
+        List<String> listaEsperada= Arrays.asList( "Mis datos",
+                "Depósito",
+                "Retiro",
+                "Estado de cuenta",
+                "Historial de apuestas",
+                "Autocontrol",
+                "Limitación del monto de pérdidas",
+                "Limitación del monto de apuestas",
+                "Limitación del monto de depósitos",
+                "Limitación de tiempo",
+                "Auto exclusión",
+                "Salir" );
+        Assert.assertEquals(alabamaCuentaPage.menuMiCuenta(driver, listaEsperada), true);
 
     }
 
@@ -336,7 +347,6 @@ public class AlabamaTest  extends BasePage {
         System.out.println(a.getText());
     }
     }
-
 
 
     @Test
