@@ -326,7 +326,6 @@ public class AlabamaTest  extends BasePage {
     // se listan el contenido del menu de mi cuenta
     @Test
         public void menuMiCuenta() throws InterruptedException {
-        AlabamaRegisterPage alabamaRegisterPage = new AlabamaRegisterPage(driver);
         MiLibreria miLibreria = new MiLibreria(driver);
         loginSMAlabama();
         Thread.sleep(15000);
@@ -348,6 +347,14 @@ public class AlabamaTest  extends BasePage {
     }
     }
 
+    @Test
+    public void btnTagsEmpty (){
+
+        MiLibreria miLibreria = new MiLibreria(driver);
+
+        miLibreria.btnEmpty();
+
+    }
 
     @Test
     public void mostarLinksHomeTest(){
