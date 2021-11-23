@@ -305,8 +305,6 @@ public class AlabamaTest  extends BasePage {
         //Ingresar a mi cuenta y validar datos del usuario
         Assert.assertEquals(AlabamaCuentaPage.ingresoMiCuenta(driver), true);
 
-
-
         List<String> listaEsperada= Arrays.asList( "Mis datos",
                 "Depósito",
                 "Retiro",
@@ -323,38 +321,14 @@ public class AlabamaTest  extends BasePage {
 
     }
 
-    // se listan el contenido del menu de mi cuenta
-    @Test
-        public void menuMiCuenta() throws InterruptedException {
-        MiLibreria miLibreria = new MiLibreria(driver);
-        loginSMAlabama();
-        Thread.sleep(15000);
-
-        WebElement miCuenta = driver.findElement(By.xpath("//p[contains(text(), 'Mi cuenta')]"));
-        miCuenta.click();
-
-        WebElement element = driver.findElement(By.xpath("(//ul[@class='nav-pills w-100'])"));
-
-        List<WebElement> parrafos= element.findElements(By.tagName("ion-label"));
-        List<WebElement> parrafosA= element.findElements(By.tagName("a"));
-    for (WebElement e : parrafos) {
-        miLibreria.scrollObjeto(e);
-        System.out.println(e.getText());
-    }
-    for (WebElement a : parrafosA){
-        miLibreria.scrollObjeto(a);
-        System.out.println(a.getText());
-    }
-    }
-
-    @Test
-    public void btnTagsEmpty (){
+    //@Test
+    /*public void btnTagsEmpty (){
 
         MiLibreria miLibreria = new MiLibreria(driver);
 
         miLibreria.btnEmpty();
 
-    }
+    }*/
 
     @Test
     public void mostarLinksHomeTest(){

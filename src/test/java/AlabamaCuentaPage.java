@@ -110,13 +110,36 @@ public class AlabamaCuentaPage extends BasePage{
     //Inputs del menu lateral Mi cuenta
      @FindBy(xpath ="(//h2[contains(text(), 'Mi Cuenta')])")
      public static WebElement tituloMiCuenta;
+     
+    //Validar menu de mi cuenta
+    public static boolean menuMiCuenta(WebDriver driver, List<String> listaEsperada) throws InterruptedException, AWTException {
+        boolean ret=true;
+        MiLibreria miLibreria = new MiLibreria(driver);
+        Thread.sleep(3000);
 
-   public static boolean menuMiCuenta(WebDriver driver, List<String> listaEsperada) throws AWTException, InterruptedException {
-       boolean listaCorrecta= false;
-       int aux=0;
+        //Bajo el zoom de la pantalla
+        miLibreria.disminuirZoom(4);
+        int aux=0;
+        //Obtengo el webElement lista
+        WebElement element = driver.findElement(By.xpath("(//ul[@class='nav-pills w-100'])"));
+        //Obtengo los web elements dentro de la lista
+        List<WebElement> parrafos= element.findElements(By.tagName("ion-label"));
+        List<WebElement> parrafosA= element.findElements(By.tagName("a"));
+        //Unifico las listas
+        parrafos.addAll(parrafosA);
 
-       return listaCorrecta;
-    }
+        //comparo cada texto de la lista de los web element, con los textos esperados
+        while(ret && aux<parrafos.size()){
+
+            if(!parrafos.get(aux).getText().contains(listaEsperada.get(aux)) ){
+                ret= false;
+            }
+
+            aux++;
+        }
+
+        return ret;
+   }
 
     /*
     * Verifica que el nombre del usuario en la web
