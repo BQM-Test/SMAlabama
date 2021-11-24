@@ -113,29 +113,30 @@ public class AlabamaCuentaPage extends BasePage{
      
     //Validar menu de mi cuenta
     public static boolean menuMiCuenta(WebDriver driver, List<String> listaEsperada) throws InterruptedException, AWTException {
-        boolean ret=true;
         MiLibreria miLibreria = new MiLibreria(driver);
-        Thread.sleep(3000);
-
-        //Bajo el zoom de la pantalla
-        miLibreria.disminuirZoom(4);
+        boolean ret=true;
         int aux=0;
+
         //Obtengo el webElement lista
         WebElement element = driver.findElement(By.xpath("(//ul[@class='nav-pills w-100'])"));
+
         //Obtengo los web elements dentro de la lista
         List<WebElement> parrafos= element.findElements(By.tagName("ion-label"));
         List<WebElement> parrafosA= element.findElements(By.tagName("a"));
+
         //Unifico las listas
         parrafos.addAll(parrafosA);
 
-        //comparo cada texto de la lista de los web element, con los textos esperados
-        while(ret && aux<parrafos.size()){
-
-            if(!parrafos.get(aux).getText().contains(listaEsperada.get(aux)) ){
+        //Recorro la lista, si se encuentra un item que no corresponde con lo esperado, develve false
+        for(WebElement e : parrafos){
+            miLibreria.scrollObjeto(e);
+            if(!e.getText().contains(listaEsperada.get(aux)) ){
+                System.out.println("Texto esperado --> "+listaEsperada.get(aux)+"\nTexto obtenido -->"+parrafos.get(aux).getText());
                 ret= false;
+                break;
             }
-
             aux++;
+            System.out.println(e.getText());
         }
 
         return ret;

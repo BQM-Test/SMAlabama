@@ -58,6 +58,9 @@ public class MiLibreria extends BasePage {
         }
     }
 
+    /*
+    * Metodo para hacer scroll hasta el WebElement que se pasa por parametro
+    * */
     public void scrollObjeto (WebElement aObject){
 
         JavascriptExecutor jse = (JavascriptExecutor)driver;
