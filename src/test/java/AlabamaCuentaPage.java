@@ -115,6 +115,7 @@ public class AlabamaCuentaPage extends BasePage{
          driver.navigate().refresh();
          Actions builder= new Actions(driver);
          boolean ret=false;
+         String messageObtained= "";
          clickEditar.click();
 
          //Si existen los 3 campos necesarios para la edicion de la psw
@@ -127,24 +128,33 @@ public class AlabamaCuentaPage extends BasePage{
                      .moveToElement(cPswRepetir).sendKeys(cPswRepetir, newPswRe);
              seriesOfActions.perform();
 
+
              if(change){
                  seriesOfActions.moveToElement(clickCambiar).click();
                  seriesOfActions.perform();
                  WebElement alert= driver.findElement(By.id("toast-container"));
-                 String text= alert.getText();
-                 System.out.println("Mensaje obtenido --> "+ text);
-                 System.out.println("Mensaje esperado --> "+messageExpected);
-                 if(text.contains(messageExpected)){
+                 messageObtained= alert.getText();
+                 if(messageObtained.equals(messageExpected)){
                      ret= true;
                  }
 
              }else{
+
+                 messageObtained= driver.findElement(By.xpath("//span[contains(@class, 'text-danger ng-star-inserted')]")).getText();
+                 if(messageExpected.equals(messageObtained)){
+                     ret= true;
+                 }
 
                  seriesOfActions.moveToElement(clickCancelar).click();
                  seriesOfActions.perform();
              }
 
          }
+
+         System.out.println("\nFallo un test de editPsw(), mensajes que compare: \n");
+         System.out.println("Mensaje obtenido --> "+ messageObtained + " datos de prueba --> currentPsw= "+currentPsw+" newPsw "+newPsw+" newPswRe "+newPswRe);
+         System.out.println("Mensaje esperado --> "+messageExpected);
+
          return ret;
      }
 

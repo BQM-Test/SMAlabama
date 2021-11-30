@@ -6,6 +6,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.asserts.SoftAssert;
 
 import java.awt.*;
 import java.net.HttpURLConnection;
@@ -333,15 +334,31 @@ public class AlabamaTest  extends BasePage {
      @Test
      public void editPsw(){
         AlabamaCuentaPage alabamaCuentaPage= new AlabamaCuentaPage(driver);
+        SoftAssert softAssert= new SoftAssert();
+
+         /*
+          * Pruebas chequeo respuestas del frontend
+          * */
+         //Repetir contraseña actual en los 3 campos
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jj", "12345jj", "Las contraseña actual y la nueva son iguales.", false));
+
+
+         /*
+        * Pruebas chequeo respuestas del servidor
+        * */
 
          //Editar psw sin ingresar datos
-        // alabamaCuentaPage.editPsw(driver, "", "", "", "Se ha modifico la información correctamente", false);
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "", "", "", "Se ha modifico la información correctamente", true));
          //Editar psw con datos validos
-         Assert.assertEquals(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jc", "12345jc", "Se ha modifico la información correctamente", true), true);
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jc", "12345jc", "Se ha modifico la información correctamente", true));
          //Editar psw con datos validos
-         Assert.assertEquals(alabamaCuentaPage.editPsw(driver, "12345jc", "12345jj", "12345jj", "Se ha modifico la información correctamente", true),true);
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jc", "12345jj", "12345jj", "Se ha modifico la información correctamente", true));
          //Contraseña actual invalida
-         Assert.assertEquals(alabamaCuentaPage.editPsw(driver, "12345j", "12345jd", "12345jd", "La clave del usuario no es correcta.", true), true);
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345j", "12345jd", "12345jd", "La clave del usuario no es correcta.", true));
+         //Repetir contraseña actual en los 3 campos
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jj", "12345jj", "Las contraseña actual y la nueva son iguales.", false));
+
+         softAssert.assertAll();
      }
 
     //@Test
