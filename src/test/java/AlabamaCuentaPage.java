@@ -1,15 +1,12 @@
-import com.google.errorprone.annotations.FormatMethod;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.*;
 
 
-
-import javax.xml.xpath.XPath;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AlabamaCuentaPage extends BasePage{
@@ -18,7 +15,7 @@ public class AlabamaCuentaPage extends BasePage{
     *Instancia de clases
     * */
     private static AlabamaRegisterPage alabamaRegisterPage;
-    private static MiLibreria miLibreria;
+    private static MyLibrary myLibrary;
 
     //para utilizar los @Find By...
     public AlabamaCuentaPage(WebDriver remoteDriver){
@@ -41,13 +38,13 @@ public class AlabamaCuentaPage extends BasePage{
     public static WebElement clickMiCuenta;
 
     @FindBy(xpath = "(//span[contains(text(), 'Editar')])")
-    public WebElement clickEditar;
+    public static WebElement clickEditar;
 
     @FindBy(id = "btn-confirm")
-    public WebElement clickCambiar;
+    public static WebElement clickCambiar;
 
     @FindBy(xpath = "(//a[contains(text(), 'Cancelar')])")
-    public WebElement clickCancelar;
+    public static WebElement clickCancelar;
 
     //Titulo del form
     @FindBy(xpath = "(//span[contains(text(), 'Datos personales')])")
@@ -83,13 +80,13 @@ public class AlabamaCuentaPage extends BasePage{
     public WebElement cDepartamento;
 
     @FindBy(id ="oldPassword")
-    public WebElement cPswActual;
+    public static WebElement cPswActual;
 
     @FindBy(id ="password")
-    public WebElement cPswNueva;
+    public static WebElement cPswNueva;
 
     @FindBy(id ="passwordRetyped")
-    public WebElement cPswRepetir;
+    public static WebElement cPswRepetir;
 
     //Inputs de datos no editables
     @FindBy(id = "selectedDay")
@@ -110,10 +107,54 @@ public class AlabamaCuentaPage extends BasePage{
     //Inputs del menu lateral Mi cuenta
      @FindBy(xpath ="(//h2[contains(text(), 'Mi Cuenta')])")
      public static WebElement tituloMiCuenta;
-     
-    //Validar menu de mi cuenta
-    public static boolean menuMiCuenta(WebDriver driver, List<String> listaEsperada) throws InterruptedException, AWTException {
-        MiLibreria miLibreria = new MiLibreria(driver);
+
+     /*
+     * Una vez en el menu de cuentas del usuario,
+     * edita la psw del mismo*/
+     public static boolean editPsw(WebDriver driver, String currentPsw, String newPsw, String newPswRe, String messageExpected, boolean change){
+         driver.navigate().refresh();
+         Actions builder= new Actions(driver);
+         boolean ret=false;
+         clickEditar.click();
+
+         //Si existen los 3 campos necesarios para la edicion de la psw
+         if(myLibrary.isElementPresent(driver, By.id("oldPassword")) &&
+                 myLibrary.isElementPresent(driver, By.id("password")) &&
+                 myLibrary.isElementPresent(driver, By.id("passwordRetyped"))){
+
+             Actions seriesOfActions= builder.moveToElement(cPswActual).sendKeys(cPswActual, currentPsw)
+                     .moveToElement(cPswNueva).sendKeys(cPswNueva, newPsw)
+                     .moveToElement(cPswRepetir).sendKeys(cPswRepetir, newPswRe);
+             seriesOfActions.perform();
+
+             if(change){
+                 seriesOfActions.moveToElement(clickCambiar).click();
+                 seriesOfActions.perform();
+                 WebElement alert= driver.findElement(By.id("toast-container"));
+                 String text= alert.getText();
+                 System.out.println("Mensaje obtenido --> "+ text);
+                 System.out.println("Mensaje esperado --> "+messageExpected);
+                 if(text.contains(messageExpected)){
+                     ret= true;
+                 }
+
+             }else{
+
+                 seriesOfActions.moveToElement(clickCancelar).click();
+                 seriesOfActions.perform();
+             }
+
+         }
+         return ret;
+     }
+
+
+    /*
+    * Valida menu de mi cuenta
+    * Recibe por parametro los Strings esperados en la ul del menu
+    * */
+    public static boolean menuMyAccount(WebDriver driver, List<String> expectedList) throws InterruptedException, AWTException {
+        MyLibrary myLibrary = new MyLibrary(driver);
         boolean ret=true;
         int aux=0;
 
@@ -121,17 +162,17 @@ public class AlabamaCuentaPage extends BasePage{
         WebElement element = driver.findElement(By.xpath("(//ul[@class='nav-pills w-100'])"));
 
         //Obtengo los web elements dentro de la lista
-        List<WebElement> parrafos= element.findElements(By.tagName("ion-label"));
-        List<WebElement> parrafosA= element.findElements(By.tagName("a"));
+        List<WebElement> paragraphs= element.findElements(By.tagName("ion-label"));
+        List<WebElement> paragraphsA= element.findElements(By.tagName("a"));
 
         //Unifico las listas
-        parrafos.addAll(parrafosA);
+        paragraphs.addAll(paragraphsA);
 
         //Recorro la lista, si se encuentra un item que no corresponde con lo esperado, develve false
-        for(WebElement e : parrafos){
-            miLibreria.scrollObjeto(e);
-            if(!e.getText().contains(listaEsperada.get(aux)) ){
-                System.out.println("Texto esperado --> "+listaEsperada.get(aux)+"\nTexto obtenido -->"+parrafos.get(aux).getText());
+        for(WebElement e : paragraphs){
+            myLibrary.scrollObjeto(e);
+            if(!e.getText().contains(expectedList.get(aux)) ){
+                System.out.println("Texto esperado --> "+expectedList.get(aux)+"\nTexto obtenido -->"+paragraphs.get(aux).getText());
                 ret= false;
                 break;
             }
@@ -146,26 +187,26 @@ public class AlabamaCuentaPage extends BasePage{
     * Verifica que el nombre del usuario en la web
     * corresponda al user que se logueo (En este caso: Tilinalab1)
     * */
-    public static String usuarioLogueado(String usuPrueba){
-        String mensaje="La cuenta no corresponde al usuario";
-        String usu= cUsuarioLogueado.getAttribute("innerHTML");
+    public static String loggedInUser(String testUsr){
+        String message="La cuenta no corresponde al usuario";
+        String usr= cUsuarioLogueado.getAttribute("innerHTML");
 
         try{
-            if(usu.equals(usuPrueba)){
-                mensaje = "La cuenta corresponde al usuario logueado";
+            if(usr.equals(testUsr)){
+                message = "La cuenta corresponde al usuario logueado";
             }
         }catch(NoSuchElementException ex){
-           mensaje= ex.getMessage();
+            message= ex.getMessage();
         }
 
-        return mensaje;
+        return message;
     }
 
     /*
     * Al ingresar a "Mi cuenta" valida que los datos no editables del usuario
     * correspondan al usuario logueado (En este caso: Tilinalab1)
     * */
-    public static boolean ingresoMiCuenta(WebDriver driver){
+    public static boolean loginAccount(WebDriver driver){
         boolean ret=false;
         cUsuarioLogueado.click();
         try {
@@ -173,20 +214,20 @@ public class AlabamaCuentaPage extends BasePage{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        List<WebElement> elementos= armarListaWebElements(driver);
-        if(elementos.size() == 4){
+        List<WebElement> elements= createListOfWebElemets(driver);
+        if(elements.size() == 4){
 
             System.out.println("Los datos no editables del usuario logueado son correctos");
             ret= true;
 
-            for (WebElement e: elementos) {
+            for (WebElement e: elements) {
                 System.out.println(e.getAttribute("innerHTML"));
             }
         }
         else{
-            int cantNoEncontrados= 4- elementos.size();
+            int quantityNotFound= 4- elements.size();
             //Else si el size < 4, hay elementos que no se encontraron
-            System.out.println("Hay elementos "+cantNoEncontrados +" que no se encontraron");
+            System.out.println("Hay elementos "+quantityNotFound +" que no se encontraron");
         }
 
         return ret;
@@ -195,34 +236,33 @@ public class AlabamaCuentaPage extends BasePage{
     /*
     * Arma una lista con los elementos que encontro
     * */
-    public static List<WebElement> armarListaWebElements(WebDriver driver){
+    public static List<WebElement> createListOfWebElemets(WebDriver driver){
 
         //Carga los elementos que encuentra a la lista
-        boolean add;
-        List<WebElement> elementos = new ArrayList<>();
+        List<WebElement> elements = new ArrayList<>();
 
         //Valida primero si encuentra el elemento con isElementPresent()
-        if(miLibreria.isElementPresent(driver, By.xpath("(//span[contains(text(), 'Datos personales')])"))){
+        if(myLibrary.isElementPresent(driver, By.xpath("(//span[contains(text(), 'Datos personales')])"))){
             cTituloForm.getAttribute("innerHTML");
-            elementos.add(cTituloForm); //si es asi lo agrega
+            elements.add(cTituloForm); //si es asi lo agrega
         }else{System.out.println("El titulo no es el esperado");}
 
-        if(miLibreria.isElementPresent(driver, By.xpath("(//span[contains(text(), '16-05-1986')])"))){
+        if(myLibrary.isElementPresent(driver, By.xpath("(//span[contains(text(), '16-05-1986')])"))){
             cNacimientoUsuLogueado.getAttribute("innerHTML");
-            elementos.add(cNacimientoUsuLogueado);
+            elements.add(cNacimientoUsuLogueado);
         }else{System.out.println("La fecha de nacimiento no es la esperada");}
 
-        if(miLibreria.isElementPresent(driver, By.xpath("(//span[contains(text(), '9683847')])"))){
+        if(myLibrary.isElementPresent(driver, By.xpath("(//span[contains(text(), '9683847')])"))){
             cDocumentoUsuLogueado.getAttribute("innerHTML");
-            elementos.add(cDocumentoUsuLogueado);
+            elements.add(cDocumentoUsuLogueado);
         }else{System.out.println("El documento no es el esperado");}
 
-        if(miLibreria.isElementPresent(driver, By.xpath("(//span[contains(text(), ' TILINALAB1 ')])"))){
+        if(myLibrary.isElementPresent(driver, By.xpath("(//span[contains(text(), ' TILINALAB1 ')])"))){
             cUsuLogueado.getAttribute("innerHTML");
-            elementos.add(cUsuLogueado);
+            elements.add(cUsuLogueado);
         }else{System.out.println("El usuario no es el esperado");}
 
-       return elementos;
+       return elements;
     }
 
 }

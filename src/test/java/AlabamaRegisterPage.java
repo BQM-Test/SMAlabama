@@ -1,10 +1,9 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -40,7 +39,7 @@ public class AlabamaRegisterPage extends BasePage{
 
     public void rClickRegistrarme () throws InterruptedException {
         //jse.executeScript("window.scrollTo(0, 500)");
-        miLibreria.scrollObjeto(clickRegistrarme);
+        myLibrary.scrollObjeto(clickRegistrarme);
         Thread.sleep(3000);
 
         clickRegistrarme.click();
@@ -48,7 +47,7 @@ public class AlabamaRegisterPage extends BasePage{
 
     public String msjErrorNombre () throws InterruptedException {
         //filling information
-        miLibreria.scrollObjeto(rNombre);
+        myLibrary.scrollObjeto(rNombre);
         Thread.sleep(3000);
         String msjErrorNombre = nombreError.getText();
         return msjErrorNombre;
@@ -205,7 +204,7 @@ public class AlabamaRegisterPage extends BasePage{
 
     //
 
-    MiLibreria miLibreria = new MiLibreria(driver);
+    MyLibrary myLibrary = new MyLibrary(driver);
 
 
      public static Date sumarRestarDiasFecha(Date fecha, int dias){
@@ -237,7 +236,7 @@ public class AlabamaRegisterPage extends BasePage{
         rNombre.sendKeys(aNombre);
         rApellidos.sendKeys(aApellido);
         rDocument.sendKeys(aCI);
-        miLibreria.scrollObjeto(rSerie);
+        myLibrary.scrollObjeto(rSerie);
         Thread.sleep(3000);
         rSerie.sendKeys(aSerie);
         if( rFolioNumber.isEnabled()){

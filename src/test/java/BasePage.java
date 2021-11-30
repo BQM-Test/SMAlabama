@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 public class BasePage {
 
     WebDriver driver;
-    WebDriverWait wait;
+    static WebDriverWait wait;
 
     @BeforeTest
     public void setup(){

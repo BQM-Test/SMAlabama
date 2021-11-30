@@ -5,9 +5,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.AWTException;
 
-public class MiLibreria extends BasePage {
+public class MyLibrary extends BasePage {
 
-    public MiLibreria(WebDriver remoteDriver) {
+    public MyLibrary(WebDriver remoteDriver) {
         driver = remoteDriver;
         wait = new WebDriverWait(driver, 5);
     }

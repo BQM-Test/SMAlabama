@@ -2,6 +2,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.openqa.selenium.interactions.Actions;
@@ -20,6 +21,11 @@ public class AlabamaTest  extends BasePage {
     public void ingresarAlabamaSM() {
         driver.get("https://supermatch-alabama-test.bqmtest.com.uy");
 
+    }
+
+    @AfterTest
+    public void closeWeb(){
+        driver.close();
     }
 
     @Test
@@ -300,12 +306,13 @@ public class AlabamaTest  extends BasePage {
         alabamaHomePage.clickBtnpopUpIngresar(); //Click en ingresar del pop up
 
         //Validar que el usuario logueado sea el correcto
-        Assert.assertEquals(AlabamaCuentaPage.usuarioLogueado("Tilinalab1"), "La cuenta corresponde al usuario logueado");
+        Assert.assertEquals(alabamaCuentaPage.loggedInUser("Tilinalab1"), "La cuenta corresponde al usuario logueado");
 
         //Ingresar a mi cuenta y validar datos del usuario
-        Assert.assertEquals(AlabamaCuentaPage.ingresoMiCuenta(driver), true);
+        Assert.assertEquals(alabamaCuentaPage.loginAccount(driver), true);
 
-        List<String> listaEsperada= Arrays.asList( "Mis datos",
+        //Validar los items en el menu de "Mi cuenta"
+       /* List<String> listaEsperada= Arrays.asList( "Mis datos",
                 "Depósito",
                 "Retiro",
                 "Estado de cuenta",
@@ -317,16 +324,32 @@ public class AlabamaTest  extends BasePage {
                 "Limitación de tiempo",
                 "Auto exclusión",
                 "Salir" );
-        Assert.assertEquals(alabamaCuentaPage.menuMiCuenta(driver, listaEsperada), true);
+        //Assert.assertEquals(alabamaCuentaPage.menuMyAccount(driver, listaEsperada), true);*/
+
+        editPsw();
 
     }
+
+     @Test
+     public void editPsw(){
+        AlabamaCuentaPage alabamaCuentaPage= new AlabamaCuentaPage(driver);
+
+         //Editar psw sin ingresar datos
+        // alabamaCuentaPage.editPsw(driver, "", "", "", "Se ha modifico la información correctamente", false);
+         //Editar psw con datos validos
+         Assert.assertEquals(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jc", "12345jc", "Se ha modifico la información correctamente", true), true);
+         //Editar psw con datos validos
+         Assert.assertEquals(alabamaCuentaPage.editPsw(driver, "12345jc", "12345jj", "12345jj", "Se ha modifico la información correctamente", true),true);
+         //Contraseña actual invalida
+         Assert.assertEquals(alabamaCuentaPage.editPsw(driver, "12345j", "12345jd", "12345jd", "La clave del usuario no es correcta.", true), true);
+     }
 
     //@Test
     /*public void btnTagsEmpty (){
 
-        MiLibreria miLibreria = new MiLibreria(driver);
+        MyLibrary myLibrary = new MyLibrary(driver);
 
-        miLibreria.btnEmpty();
+        myLibrary.btnEmpty();
 
     }*/
 
