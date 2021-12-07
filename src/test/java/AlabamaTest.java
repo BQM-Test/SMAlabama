@@ -331,6 +331,11 @@ public class AlabamaTest  extends BasePage {
 
     }
 
+    @Test
+    public void editNameLastName(){
+
+    }
+
      @Test
      public void editPsw(){
         AlabamaCuentaPage alabamaCuentaPage= new AlabamaCuentaPage(driver);
@@ -340,23 +345,29 @@ public class AlabamaTest  extends BasePage {
           * Pruebas chequeo respuestas del frontend
           * */
          //Repetir contraseña actual en los 3 campos
-         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jj", "12345jj", "Las contraseña actual y la nueva son iguales.", false));
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jj", "12345jj", "Las contraseña actual y la nueva son iguales.", false), "Error: No valida que la psw actual y nueva sean diferentes");
+         //Ingresar contraseña nueva formato invalido
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345", "12345", " La contraseña debe tener entre 6 y 15 caracteres, al menos una letra y un número ", false), "Error: No valida formato de la psw");
+         //Ingresar contraseña nueva formato invalido
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "1234g", "1234g", " La contraseña debe tener entre 6 y 15 caracteres, al menos una letra y un número ", false), "Error: No valida formato de la psw");
+         //Ingresar psw nueva y repetila incorrectamente
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "123456g", "12345g", " Las contraseñas deben ser iguales ", false), "Error: No valida que la psw nueva y la repeticion sean iguales");
 
 
          /*
-        * Pruebas chequeo respuestas del servidor
+        * Pruebas chequeo respuestas del servidor, parametro change= true
         * */
 
          //Editar psw sin ingresar datos
-         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "", "", "", "Se ha modifico la información correctamente", true));
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "", "", "", "Se ha modifico la información correctamente", true), "Error: No permite guardar cambios sin editar la psw");
          //Editar psw con datos validos
-         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jc", "12345jc", "Se ha modifico la información correctamente", true));
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jc", "12345jc", "Se ha modifico la información correctamente", true), "Error: No permitio editar la psw con datos validos");
          //Editar psw con datos validos
-         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jc", "12345jj", "12345jj", "Se ha modifico la información correctamente", true));
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jc", "12345jj", "12345jj", "Se ha modifico la información correctamente", true), "Error: No permitio editar la psw por segunda vez, con datos validos");
          //Contraseña actual invalida
-         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345j", "12345jd", "12345jd", "La clave del usuario no es correcta.", true));
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345j", "12345jd", "12345jd", "La clave del usuario no es correcta.", true), "Error: No valida la psw actual");
          //Repetir contraseña actual en los 3 campos
-         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jj", "12345jj", "Las contraseña actual y la nueva son iguales.", false));
+         softAssert.assertTrue(alabamaCuentaPage.editPsw(driver, "12345jj", "12345jj", "12345jj", "Las contraseña actual y la nueva son iguales.", false), "Error: no valida que la psw actual y la nueva sean diferentes");
 
          softAssert.assertAll();
      }

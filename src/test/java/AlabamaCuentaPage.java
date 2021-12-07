@@ -62,10 +62,10 @@ public class AlabamaCuentaPage extends BasePage{
 
     //Inputs de datos editables
     @FindBy(id ="name")
-    public WebElement cNombre;
+    public static WebElement cName;
 
     @FindBy(id ="lastname")
-    public WebElement cApellido;
+    public static WebElement cLastName;
 
     @FindBy(id ="cellphone")
     public WebElement cCelular;
@@ -102,11 +102,35 @@ public class AlabamaCuentaPage extends BasePage{
     public WebElement cDocumento;
 
     @FindBy(id = "username")
-    public WebElement cUser;
+    public static WebElement cUser;
 
     //Inputs del menu lateral Mi cuenta
      @FindBy(xpath ="(//h2[contains(text(), 'Mi Cuenta')])")
      public static WebElement tituloMiCuenta;
+
+     public static boolean editNameLastName(WebDriver driver, String newName, String newLastName, boolean change){
+         driver.navigate().refresh();
+         boolean ret= false;
+         clickEditar.click();
+         Actions builder= new Actions(driver);
+         String messageObtained= "No devolvio ningun mensaje\n";
+
+         if(myLibrary.isElementPresent(driver, By.id("name")) &&
+            myLibrary.isElementPresent(driver, By.id("lastname"))){
+
+             Actions serieOfActions= builder.moveToElement(cName).sendKeys(cName, newName).
+                                     moveToElement(cLastName).sendKeys(cLastName, newLastName).moveToElement(cDocumentoUsuLogueado).click();
+                    serieOfActions.perform();
+
+             if(change){
+
+             }
+         }
+
+
+
+         return ret;
+     }
 
      /*
      * Una vez en el menu de cuentas del usuario,
@@ -115,47 +139,57 @@ public class AlabamaCuentaPage extends BasePage{
          driver.navigate().refresh();
          Actions builder= new Actions(driver);
          boolean ret=false;
-         String messageObtained= "";
+         String messageObtained= "No devolvio ningun mensaje\n";
          clickEditar.click();
 
-         //Si existen los 3 campos necesarios para la edicion de la psw
-         if(myLibrary.isElementPresent(driver, By.id("oldPassword")) &&
-                 myLibrary.isElementPresent(driver, By.id("password")) &&
-                 myLibrary.isElementPresent(driver, By.id("passwordRetyped"))){
+         try {
 
-             Actions seriesOfActions= builder.moveToElement(cPswActual).sendKeys(cPswActual, currentPsw)
-                     .moveToElement(cPswNueva).sendKeys(cPswNueva, newPsw)
-                     .moveToElement(cPswRepetir).sendKeys(cPswRepetir, newPswRe);
-             seriesOfActions.perform();
+             //Si existen los 3 campos necesarios para la edicion de la psw
+             if (myLibrary.isElementPresent(driver, By.id("oldPassword")) &&
+                     myLibrary.isElementPresent(driver, By.id("password")) &&
+                     myLibrary.isElementPresent(driver, By.id("passwordRetyped"))) {
 
-
-             if(change){
-                 seriesOfActions.moveToElement(clickCambiar).click();
+                 Actions seriesOfActions = builder.moveToElement(cPswActual).sendKeys(cPswActual, currentPsw)
+                         .moveToElement(cPswNueva).sendKeys(cPswNueva, newPsw)
+                         .moveToElement(cPswRepetir).sendKeys(cPswRepetir, newPswRe).moveToElement(cUser).click();
                  seriesOfActions.perform();
-                 WebElement alert= driver.findElement(By.id("toast-container"));
-                 messageObtained= alert.getText();
-                 if(messageObtained.equals(messageExpected)){
-                     ret= true;
+
+                 if (change) {
+                     seriesOfActions.moveToElement(clickCambiar).click();
+                     seriesOfActions.perform();
+                     WebElement alert = driver.findElement(By.id("toast-container"));
+                     messageObtained = alert.getText();
+                     if (messageObtained.equals(messageExpected)) {
+                         ret = true;
+                     }
+
+                 } else {
+
+                     messageObtained = driver.findElement(By.xpath("//span[contains(@class, 'text-danger ng-star-inserted')]")).getText();
+                     if (messageExpected.equals(messageObtained)) {
+                         ret = true;
+                     }
+
+                     seriesOfActions.moveToElement(clickCancelar).click();
+                     seriesOfActions.perform();
                  }
 
-             }else{
-
-                 messageObtained= driver.findElement(By.xpath("//span[contains(@class, 'text-danger ng-star-inserted')]")).getText();
-                 if(messageExpected.equals(messageObtained)){
-                     ret= true;
-                 }
-
-                 seriesOfActions.moveToElement(clickCancelar).click();
-                 seriesOfActions.perform();
              }
+         }catch(Exception e){
+             e.getMessage();
+
+         }finally {
+
+             if(!ret) {
+                 System.out.println("Fallo un test de editPsw(), mensajes que compare: \n");
+                 System.out.println("Mensaje esperado --> " + messageExpected);
+                 System.out.println("Mensaje obtenido --> " + messageObtained+ "Datos de prueba --> currentPsw= " + currentPsw + " newPsw= " + newPsw + " newPswRe= " + newPswRe + "change= "+change);
+             }
+
+             return ret;
 
          }
 
-         System.out.println("\nFallo un test de editPsw(), mensajes que compare: \n");
-         System.out.println("Mensaje obtenido --> "+ messageObtained + " datos de prueba --> currentPsw= "+currentPsw+" newPsw "+newPsw+" newPswRe "+newPswRe);
-         System.out.println("Mensaje esperado --> "+messageExpected);
-
-         return ret;
      }
 
 
